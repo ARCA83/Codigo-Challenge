@@ -1,27 +1,27 @@
 import { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../../../contexts/AdminContext";
+import { getCategories } from "../../../services/CategoriesServices";
 import './Products.scss';
 
 export const Products = () => {
     const { setAdminTitle } = useContext(AdminContext);
-    const [listOfProducts, setListOfProducts] = useState([
-        {
-            productId: 1,
-            productName: 'Vestido Loa',
-            productDescription: 'Product Brand',
-            productPrice: 45.90,
-            productImage: 'https://www.pngitem.com/pimgs.png',
-            productCategory: 'Ropa',
-        },
-        {
-            productId: 2,
-            productName: 'Blue Shoes Prime',
-            productDescription: 'Product Brand',
-            productPrice: 20.00,
-            productImage: 'https://www.pngitem.com/pimgs.png',
-            productCategory: 'Zapatos',
+    const [listOfProducts, setListOfProducts] = useState([]);
+    const [listOfCategories, setListOfCategories] = useState([]);
+    const [product, setProduct] = useState({
+        productoNombre: '',
+        productoDescripcion: '',
+        productoPrecio: 0.00,
+        productoImagen: '',
+        categoriaId: 0,
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getCategories();
+            setListOfCategories(response.content);
         }
-    ]);
+        fetchData();
+    }, [])
 
     useEffect(() => {
         setAdminTitle('Products');
@@ -38,14 +38,6 @@ export const Products = () => {
         fetchData();
     }, [])
 
-    const [product, setProduct] = useState({
-        productName: '',
-        productDescription: '',
-        productPrice: 0,
-        productImage: '',
-        productCategory: '',
-    });
-
     const createProduct = async (event) => {
         event.preventDefault();
         try {
@@ -58,10 +50,13 @@ export const Products = () => {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        if (name === 'productPrice') {
+        if (name === 'productoPrecio') {
             return setProduct({ ...product, [name]: parseFloat(value) });
+        } else if (name === 'categoriaId') {
+            return setProduct({ ...product, [name]: parseInt(value) });
+        } else {
+            return setProduct({ ...product, [name]: value });
         }
-        return setProduct({ ...product, [name]: value });
     };
     return (
         <div className='Products'>
@@ -96,55 +91,61 @@ export const Products = () => {
             <h4 className='Products-subtitle'>Create product</h4>
             <form className='Products-create-form' onSubmit={createProduct}>
                 <div className="form-group">
-                    <label htmlFor="productName">Product name</label>
+                    <label htmlFor="productoNombre">Product name</label>
                     <input
                         type="text"
-                        name='productName'
-                        id='productName'
-                        value={product.productName}
+                        name='productoNombre'
+                        id='productoNombre'
+                        value={product.productoNombre}
                         onChange={handleInputChange}
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="productDescription">Product description</label>
+                    <label htmlFor="productoDescripcion">Product description</label>
                     <input
                         type="text"
-                        name='productDescription'
-                        id='productDescription'
-                        value={product.productDescription}
+                        name='productoDescripcion'
+                        id='productoDescripcion'
+                        value={product.productoDescripcion}
                         onChange={handleInputChange}
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="productPrice">Product price</label>
+                    <label htmlFor="productoPrecio">Product price</label>
                     <input
                         type="number"
                         min={0}
                         step={0.1}
-                        name='productPrice'
-                        id='productPrice'
-                        value={product.productPrice}
+                        name='productoPrecio'
+                        id='productoPrecio'
+                        value={product.productoPrecio}
                         onChange={handleInputChange} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="productImage">Product image</label>
+                    <label htmlFor="productoImagen">Product image</label>
                     <input
-                        type="file"
-                        name='productImage'
-                        id='productImage'
-                        value={product.productImage}
+                        type="text"
+                        name='productoImagen'
+                        id='productoImagen'
+                        value={product.productoImagen}
                         onChange={handleInputChange}
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="productCategory">Product category</label>
-                    <input
-                        type='text'
-                        name='productCategory'
-                        id='productCategory'
-                        value={product.productCategory}
+                    <label htmlFor="categoriaId">Product category</label>
+                    <select
+                        name='categoriaId'
+                        id='categoriaId'
+                        value={product.categoriaId}
                         onChange={handleInputChange}
-                    />
+                    >
+                        <option value="">Elegir Categoria</option>
+                        {
+                            listOfCategories.map((category, index) => (
+                                <option key={index} value={category.categoriaId}>{category.categoriaNombre}</option>
+                            ))
+                        }
+                    </select>
                 </div>
                 <div className='form-group'>
                     <button className='Products-create-button'>Create product</button>
