@@ -1,12 +1,12 @@
 import { API_URL } from '@lib/Enviroments'
 
-export const getCategories = async () => {
+export const GetCategories = async () => {
   const response = await fetch(`${API_URL}/productos/categorias`)
   const data = await response.json()
   return data
 }
 
-export const postCategory = async (category) => {
+export const PostCategory = async (category) => {
   const response = await fetch(`${API_URL}/productos/categorias`, {
     method: 'POST',
     headers: {

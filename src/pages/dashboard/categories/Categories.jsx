@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../../../contexts/AdminContext";
-import { getCategories, postCategory } from "../../../services/CategoriesServices";
+import { GetCategories, PostCategory } from "../../../services/CategoriesServices";
 
 export const Categories = () => {
 
@@ -11,7 +11,6 @@ export const Categories = () => {
         categoriaDescripcion: "",
     });
     const [bandera, setBandera] = useState(false);
-    console.log(category);
 
     useEffect(() => {
         setAdminTitle('Categories');
@@ -19,7 +18,7 @@ export const Categories = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getCategories();
+            const response = await GetCategories();
             setListOfCategories(response.content);
         }
         fetchData();
@@ -28,7 +27,7 @@ export const Categories = () => {
     const createCategory = async (event) => {
         event.preventDefault();
         try {
-            const response = await postCategory(category);
+            const response = await PostCategory(category);
             if (response.success === true) {
                 setBandera(!bandera);
                 setCategory({

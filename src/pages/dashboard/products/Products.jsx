@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../../../contexts/AdminContext";
-import { getCategories } from "../../../services/CategoriesServices";
+import { GetCategories } from "../../../services/CategoriesServices";
+import { GetAllProducts, PostProduct } from "../../../services/ProductsServices";
 import './Products.scss';
 
 export const Products = () => {
@@ -14,14 +15,23 @@ export const Products = () => {
         productoImagen: '',
         categoriaId: 0,
     });
+    const [bandera, setBandera] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getCategories();
+            const response = await GetCategories();
             setListOfCategories(response.content);
         }
         fetchData();
     }, [])
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            const response = await GetAllProducts();
+            setListOfProducts(response.content);
+        }
+        fetchData();
+    },[bandera])
 
     useEffect(() => {
         setAdminTitle('Products');
@@ -42,7 +52,16 @@ export const Products = () => {
         event.preventDefault();
         try {
             const response = await PostProduct(product);
-            console.log(response)
+            if (response.success) {
+                setBandera(!bandera);
+                setProduct({
+                    productoNombre: '',
+                    productoDescripcion: '',
+                    productoPrecio: 0.00,
+                    productoImagen: '',
+                    categoriaId: 0,
+                })
+            }
         } catch (error) {
             console.log(error)
         }
@@ -69,18 +88,18 @@ export const Products = () => {
                             <th>Product description</th>
                             <th>Product price</th>
                             <th>Product image</th>
-                            <th>Product category</th>
+                            {/* <th>Product category</th> */}
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            listOfProducts.map(product => (
-                                <tr key={product.productId}>
-                                    <td>{product.productName}</td>
-                                    <td>{product.productDescription}</td>
-                                    <td>{product.productPrice}</td>
-                                    <td>{product.productImage}</td>
-                                    <td>{product.productCategory}</td>
+                            listOfProducts.length > 0 && listOfProducts.map(product => (
+                                <tr key={product.productoId}>
+                                    <td>{product.productoNombre}</td>
+                                    <td>{product.productoDescripcion}</td>
+                                    <td>{product.productoPrecio}</td>
+                                    <td>{product.productoImagen}</td>
+                                    {/* <td>{product.productoCategoria}</td> */}
                                 </tr>
                             ))
                         }

@@ -21,7 +21,7 @@ export const Home = () => {
             }
         }
         fetchData();
-    }, [listOfProducts]);
+    }, []);
 
     return (
         <>
@@ -59,7 +59,9 @@ export const Home = () => {
                 <div className="u_wrapper">
                     <div className="Show-products-container">
                         {
-                            [1, 2, 3, 4, 5].map((product, index) => <ProductCard key={index} />)
+                            listOfProducts.length > 0 && listOfProducts.map((product, index) => (
+                                <ProductCard key={index} product={product} />
+                            ))
                         }
                     </div>
                 </div>
