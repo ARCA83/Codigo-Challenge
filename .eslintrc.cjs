@@ -5,6 +5,7 @@ module.exports = {
     node: true
   },
   extends: [
+    "eslint:recommended",
     'plugin:react/recommended',
     'standard'
   ],
@@ -19,5 +20,7 @@ module.exports = {
     'react'
   ],
   rules: {
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
   }
 }

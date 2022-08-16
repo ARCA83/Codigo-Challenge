@@ -25,8 +25,6 @@ export const Home = () => {
 
     return (
         <>
-            <PublicHeader />
-
             <div className='NewHero'>
                 <div className="u_wrapper">
                     <div className='NewHero-container'>

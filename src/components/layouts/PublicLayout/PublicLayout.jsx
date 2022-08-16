@@ -1,9 +1,12 @@
+import { PublicHeader } from "../../common/PublicHeader/PublicHeader"
+import { Outlet } from "react-router-dom"
 
 
-const PublicLayout = ({ children }) => {
+export const PublicLayout = ({ children }) => {
     return (
         <div className='Public-layout'>
-            {children}
+            <PublicHeader />
+            <Outlet />
         </div>
     )
 }

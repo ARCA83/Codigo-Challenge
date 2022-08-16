@@ -11,7 +11,7 @@ const ProductCard = ({ product }) => {
         <div className='Card'>
             <div className="Card-header">
                 <img className='Card-product-image' src={product.productoImagen} alt="" />
-                <span className='Card-product-name'>{product.productoNombre}</span>
+                <span className='Card-product-name'>Category</span>
                 <div className='Card-product-icon'>
                     {
                         likedProduct ? <AiFillHeart className='Card-product-heart-liked' /> : <AiOutlineHeart className='Card-product-heart' />

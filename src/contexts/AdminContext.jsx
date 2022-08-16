@@ -1,51 +1,39 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const AdminContext = createContext();
 
 export const AdminContextProvider = ({ children }) => {
     const [adminTitle, setAdminTitle] = useState("Products");
-    const [state, setState] = useState({
-        name: "",
-        age: "",
-        address: "",
-        phone: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
+    const [productsList, setProductsList] = useState({
         isLoading: false,
         isError: false,
-        errorMessage: "",
         isSuccess: false,
+        errorMessage: "",
         successMessage: "",
+        products: [],
     });
+    const [productsFiltered, setProductsFiltered] = useState([]);
 
-    const handleChange = (e) => {
-        setState({
-            ...state,
-            [e.target.name]: e.target.value,
-        });
-    }
+    useEffect(() => {
+        setProductsFiltered(productsList.products);
+    }, [productsList.products]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setState({
-            ...state,
-            isLoading: true,
-            isError: false,
-            isSuccess: false,
+    const handleProductsList = (key, value) => {
+        setProductsList({
+            ...productsList,
+            [key]: value,
         });
-        setTimeout(() => {
-            setState({
-                ...state,
-                isLoading: false,
-                isSuccess: true,
-                successMessage: "Successfully registered",
-            });
-        }, 2000);
     }
 
     return (
-        <AdminContext.Provider value={{ adminTitle, setAdminTitle, handleChange, handleSubmit }}>
+        <AdminContext.Provider value={{
+            adminTitle,
+            setAdminTitle,
+            productsList,
+            handleProductsList,
+            productsFiltered,
+            setProductsFiltered
+        }}>
             {children}
         </AdminContext.Provider>
     );

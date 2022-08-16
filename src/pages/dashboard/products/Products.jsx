@@ -110,7 +110,7 @@ export const Products = () => {
             <h4 className='Products-subtitle'>Create product</h4>
             <form className='Products-create-form' onSubmit={createProduct}>
                 <div className="form-group">
-                    <label htmlFor="productoNombre">Product name</label>
+                    <label htmlFor="productoNombre">Nombre de producto</label>
                     <input
                         type="text"
                         name='productoNombre'
