@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../../../contexts/AdminContext";
 import { GetCategories } from "../../../services/CategoriesServices";
-import { GetAllProducts, PostProduct } from "../../../services/ProductsServices";
+import { GetAllProducts, PostProduct, UploadProductImage } from "../../../services/ProductsServices";
+import { IoIosArrowDown } from "react-icons/io";
 import './Products.scss';
 
 export const Products = () => {
@@ -25,13 +26,13 @@ export const Products = () => {
         fetchData();
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         const fetchData = async () => {
             const response = await GetAllProducts();
             setListOfProducts(response.content);
         }
         fetchData();
-    },[bandera])
+    }, [bandera])
 
     useEffect(() => {
         setAdminTitle('Products');
@@ -77,6 +78,19 @@ export const Products = () => {
             return setProduct({ ...product, [name]: value });
         }
     };
+
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0]
+        try {
+            const response = await UploadProductImage(file)
+            if (response.success) {
+                return setProduct({ ...product, [name]: value })
+            }
+        } catch (error) {
+            return console.log(error)
+        }
+    };
+
     return (
         <div className='Products'>
             <h4 className='Products-subtitle'>All products</h4>
@@ -86,9 +100,9 @@ export const Products = () => {
                         <tr>
                             <th>Product name</th>
                             <th>Product description</th>
-                            <th>Product price</th>
-                            <th>Product image</th>
-                            {/* <th>Product category</th> */}
+                            <th>Price</th>
+                            <th>Image</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,8 +112,12 @@ export const Products = () => {
                                     <td>{product.productoNombre}</td>
                                     <td>{product.productoDescripcion}</td>
                                     <td>{product.productoPrecio}</td>
-                                    <td>{product.productoImagen}</td>
-                                    {/* <td>{product.productoCategoria}</td> */}
+                                    <td>
+                                        <img src={product.productoImagen} alt="Product Preview" loading={"lazy"} />
+                                    </td>
+                                    <td>
+                                        <button>Details<IoIosArrowDown /></button>
+                                    </td>
                                 </tr>
                             ))
                         }
@@ -143,11 +161,10 @@ export const Products = () => {
                 <div className="form-group">
                     <label htmlFor="productoImagen">Product image</label>
                     <input
-                        type="text"
+                        type="file"
                         name='productoImagen'
                         id='productoImagen'
-                        value={product.productoImagen}
-                        onChange={handleInputChange}
+                        onChange={handleFileChange}
                     />
                 </div>
                 <div className="form-group">

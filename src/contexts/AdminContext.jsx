@@ -1,9 +1,17 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react"
 
-export const AdminContext = createContext();
+export const AdminContext = createContext()
 
 export const AdminContextProvider = ({ children }) => {
-    const [adminTitle, setAdminTitle] = useState("Products");
+    const [adminTitle, setAdminTitle] = useState("Products")
+    const [authentication, setAuthentication] = useState({
+        isAuthenticated: false,
+        isLoading: false,
+        isError: false,
+        errorMessage: "",
+        successMessage: "",
+        user: {},
+    })
     const [productsList, setProductsList] = useState({
         isLoading: false,
         isError: false,
@@ -11,19 +19,21 @@ export const AdminContextProvider = ({ children }) => {
         errorMessage: "",
         successMessage: "",
         products: [],
-    });
+    })
     const [productsFiltered, setProductsFiltered] = useState([]);
 
     useEffect(() => {
-        setProductsFiltered(productsList.products);
-    }, [productsList.products]);
+        setProductsFiltered(productsList.products)
+    }, [productsList.products])
 
     const handleProductsList = (key, value) => {
         setProductsList({
             ...productsList,
             [key]: value,
-        });
+        })
     }
+
+    console.log(authentication)
 
     return (
         <AdminContext.Provider value={{
@@ -32,7 +42,9 @@ export const AdminContextProvider = ({ children }) => {
             productsList,
             handleProductsList,
             productsFiltered,
-            setProductsFiltered
+            setProductsFiltered,
+            authentication,
+            setAuthentication,
         }}>
             {children}
         </AdminContext.Provider>

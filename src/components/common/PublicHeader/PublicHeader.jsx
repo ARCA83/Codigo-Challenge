@@ -3,14 +3,27 @@ import { BiSearch } from 'react-icons/bi';
 import { Link, NavLink } from 'react-router-dom';
 import { RiShoppingBag3Line, RiUser3Line } from 'react-icons/ri';
 import { HiOutlineMenuAlt3 } from 'react-icons/hi';
-import { Modal, Button } from 'react-bootstrap';
 import { useState } from 'react';
+import { PublicRegister } from '../PublicRegister/PublicRegister';
+import { PublicLogin } from '../PublicLogin/PublicLogin';
 
 export const PublicHeader = () => {
 
-    const [show, setShow] = useState(false);
+    const [showLogin, setShowLogin] = useState(false)
+    const [showRegister, setShowRegister] = useState(false)
 
-    const handleClose = () => setShow(false);
+    const handleCloseLogin = () => setShowLogin(false)
+    const handleCloseRegister = () => setShowRegister(false)
+
+    const handleChangeLoginToRegister = () => {
+        setShowLogin(false)
+        setShowRegister(true)
+    }
+
+    const handleChangeRegisterToLogin = () => {
+        setShowRegister(false)
+        setShowLogin(true)
+    }
 
     return (
         <>
@@ -59,7 +72,7 @@ export const PublicHeader = () => {
                             <RiShoppingBag3Line />
                         </div>
                         <div className="Header-user">
-                            <RiUser3Line onClick={() => setShow(true)} />
+                            <RiUser3Line onClick={() => setShowLogin(true)} />
                         </div>
                         <div className="Header-burger-button">
                             <HiOutlineMenuAlt3 />
@@ -68,28 +81,16 @@ export const PublicHeader = () => {
                 </div>
             </div>
 
-            <Modal show={show} onHide={handleClose} className='Auth-modal'>
-                <Modal.Header closeButton>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className='Auth-modal-logo'>
-                        <img src='/vite.svg' alt='logo' />
-                    </div>
-                    <div className='Auth-modal-form'>
-                        <div className='Auth-modal-form-title'>
-                            Iniciar sesión
-                        </div>
-                        <input className='Auth-modal-form-input' type="text" placeholder="Correo electrónico" />
-                        <input className='Auth-modal-form-input' type="password" placeholder="Contraseña" />
-                        <button className='Auth-modal-form-button' type="submit">
-                            Iniciar sesión
-                        </button>
-                        <button className='Auth-modal-form-button' type="submit">
-                            Crear cuenta
-                        </button>
-                    </div>
-                </Modal.Body>
-            </Modal>
+            <PublicRegister
+                showRegister={showRegister}
+                handleCloseRegister={handleCloseRegister}
+                handleChangeRegisterToLogin={handleChangeRegisterToLogin}
+            />
+            <PublicLogin
+                showLogin={showLogin}
+                handleCloseLogin={handleCloseLogin}
+                handleChangeLoginToRegister={handleChangeLoginToRegister}
+            />
         </>
     )
 }
