@@ -8,6 +8,7 @@ import { MdOutlineNotificationAdd } from "react-icons/md";
 import { IoIosArrowDown } from "react-icons/io";
 import "./AdminContent.scss";
 import { AdminContext } from "../../../contexts/AdminContext";
+import { SignOut } from "../../../services/AuthServices";
 
 export const AdminContent = ({ children }) => {
   const { adminTitle } = useContext(AdminContext);
@@ -32,7 +33,7 @@ export const AdminContent = ({ children }) => {
               <h3>Paolo Soncco</h3>
               <span>Vendedor</span>
             </div>
-            <IoIosArrowDown />
+            <IoIosArrowDown style={{ cursor: "pointer" }} onClick={SignOut} />
           </div>
         </div>
         {children}

@@ -9,7 +9,8 @@ export const SignIn = async (user) => {
     body: JSON.stringify(user),
   });
   const data = await response.json();
-  return data;
+  const status = response.status;
+  return { data, status };
 };
 
 export const SignUp = async (user) => {
@@ -25,7 +26,7 @@ export const SignUp = async (user) => {
 };
 
 export const isAuth = () => {
-  const token = window.localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   if (!token) {
     return false;
   }
@@ -34,9 +35,10 @@ export const isAuth = () => {
   if (jsonPayload.exp > new Date() / 1000) {
     return true;
   }
+  return false;
 };
 
 export const SignOut = () => {
   window.localStorage.removeItem("token");
-  return (window.location.href = "/pe");
+  return (window.location.href = "/");
 };

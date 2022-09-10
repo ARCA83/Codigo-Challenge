@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { AdminContext } from "../../../contexts/AdminContext";
 import { SignIn } from "../../../services/AuthServices";
+import { useNavigate } from "react-router-dom";
 
 export const PublicLogin = ({
   showLogin,
@@ -10,12 +11,14 @@ export const PublicLogin = ({
 }) => {
   const { authentication, setAuthentication } = useContext(AdminContext);
   const [userCredentials, setUserCredentials] = useState({
-    userEmail: "",
-    userPassword: "",
+    username: "",
+    password: "",
   });
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.currentTarget;
+
     setUserCredentials({
       ...userCredentials,
       [name]: value,
@@ -24,32 +27,21 @@ export const PublicLogin = ({
 
   const createUser = async (e) => {
     e.preventDefault();
-    setAuthentication({
-      ...authentication,
-      isLoading: true,
-    });
-    try {
-      const response = await SignIn(userCredentials);
-      if (response.success) {
-        return setAuthentication({
-          ...authentication,
-          isAuthenticated: true,
-          isLoading: false,
-        });
-      }
-      return setAuthentication({
+    const response = await SignIn(userCredentials);
+    if (response.status === 200) {
+      localStorage.setItem("token", response.data.access_token);
+      setAuthentication({
         ...authentication,
-        isError: true,
-        errorMessage: response.message,
-        isLoading: false,
+        isAuthenticated: true,
+        successMessage: "Usuario logeado exitosamente",
       });
-    } catch (error) {
-      console.log(error);
-      return setAuthentication({
+      navigate("/admin-panel");
+    } else {
+      setAuthentication({
         ...authentication,
-        isLoading: false,
+        isAuthenticated: false,
         isError: true,
-        errorMessage: error.message,
+        errorMessage: "Credenciales incorrectas",
       });
     }
   };
@@ -76,28 +68,28 @@ export const PublicLogin = ({
             {authentication.errorMessage}
           </div>
           <div className="Auth-modal-form-group">
-            <label htmlFor="userEmail" className="Auth-modal-label">
-              Correo
+            <label htmlFor="username" className="Auth-modal-label">
+              Username
             </label>
             <input
               type="text"
               className="Auth-modal-input"
-              id="userEmail"
-              name="userEmail"
-              value={userCredentials.userEmail}
+              id="username"
+              name="username"
+              value={userCredentials.username}
               onChange={handleInputChange}
             />
           </div>
           <div className="Auth-modal-form-group">
-            <label htmlFor="userPassword" className="Auth-modal-label">
+            <label htmlFor="password" className="Auth-modal-label">
               Contraseña
             </label>
             <input
               type="password"
               className="Auth-modal-input"
-              id="userPassword"
-              name="userPassword"
-              value={userCredentials.userPassword}
+              id="password"
+              name="password"
+              value={userCredentials.password}
               onChange={handleInputChange}
             />
           </div>

@@ -7,7 +7,7 @@ import "./AdminLayout.scss";
 export const AdminLayout = () => {
   const isAuthenticated = isAuth();
 
-  // if (!isAuthenticated) return <Navigate to={"/pe"} />;
+  if (!isAuthenticated) return <Navigate to="/" />;
 
   return (
     <div className="Admin-layout">
