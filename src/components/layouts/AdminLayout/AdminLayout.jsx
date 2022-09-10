@@ -1,16 +1,20 @@
-import { AdminContent } from '../../common/AdminContent/AdminContent';
-import { AdminSidebar } from '../../common/AdminSidebar/AdminSidebar';
-import { Outlet } from 'react-router-dom';
-import './AdminLayout.scss';
+import { AdminContent } from "../../common/AdminContent/AdminContent";
+import { AdminSidebar } from "../../common/AdminSidebar/AdminSidebar";
+import { Navigate, Outlet } from "react-router-dom";
+import { isAuth } from "../../../services/AuthServices";
+import "./AdminLayout.scss";
 
-export const AdminLayout = ({ children }) => {
+export const AdminLayout = () => {
+  const isAuthenticated = isAuth();
 
-    return (
-        <div className='Admin-layout'>
-            <AdminSidebar />
-            <AdminContent >
-                <Outlet />
-            </AdminContent>
-        </div>
-    )
-}
+  // if (!isAuthenticated) return <Navigate to={"/pe"} />;
+
+  return (
+    <div className="Admin-layout">
+      <AdminSidebar />
+      <AdminContent>
+        <Outlet />
+      </AdminContent>
+    </div>
+  );
+};

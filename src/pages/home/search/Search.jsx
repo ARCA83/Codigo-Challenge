@@ -13,15 +13,15 @@ export const Search = () => {
     useEffect(() => {
         GetAllProducts()
             .then(response => {
-                handleProductsList("products", response.content);
-                setProductsFiltered(response.content);
+                handleProductsList("products", response);
+                setProductsFiltered(response);
             })
     }, []);
 
     const updateProductsList = (route, preferencia_id) => {
         GetAllProducts(preferencia_id)
             .then(response => {
-                handleProductsList("products", response.content);
+                handleProductsList("products", response);
             })
             .catch(error => {
                 console.log(error);
