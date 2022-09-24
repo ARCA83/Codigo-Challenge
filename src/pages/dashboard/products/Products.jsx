@@ -37,8 +37,9 @@ export const Products = () => {
   useEffect(() => {
     setAdminTitle("Products");
     const fetchData = async () => {
-      const response = await GetAllProducts();
-      setListOfProducts(response);
+      const token = GetToken();
+      const response = await GetAllProducts(token);
+      setListOfProducts(response.data.data);
     };
     fetchData();
   }, [bandera]);
@@ -96,23 +97,25 @@ export const Products = () => {
               <th>Product description</th>
               <th>Price</th>
               <th>Image</th>
+              <th>Stock</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {listOfProducts.length > 0 &&
               listOfProducts.map((product) => (
-                <tr key={product.productoId}>
-                  <td>{product.productoNombre}</td>
-                  <td>{product.productoDescripcion}</td>
-                  <td>{product.productoPrecio}</td>
+                <tr key={product.id}>
+                  <td>{product.name}</td>
+                  <td>{product.description}</td>
+                  <td>S/ {product.price}</td>
                   <td>
                     <img
-                      src={product.productoImagen}
+                      src={product.image}
                       alt="Product Preview"
                       loading={"lazy"}
                     />
                   </td>
+                  <td>{product.stock}</td>
                   <td>
                     <button>
                       Details
