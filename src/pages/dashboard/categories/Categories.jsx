@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../../../contexts/AdminContext";
+import { GetToken } from "../../../services/AuthServices";
 import {
   GetCategories,
   PostCategory,
@@ -9,8 +10,7 @@ export const Categories = () => {
   const { setAdminTitle } = useContext(AdminContext);
   const [listOfCategories, setListOfCategories] = useState([]);
   const [category, setCategory] = useState({
-    categoriaNombre: "",
-    categoriaDescripcion: "",
+    name: "",
   });
   const [bandera, setBandera] = useState(false);
 
@@ -20,8 +20,9 @@ export const Categories = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await GetCategories();
-      setListOfCategories(response);
+      const token = GetToken();
+      const response = await GetCategories(token);
+      setListOfCategories(response.data);
     };
     fetchData();
   }, [bandera]);
@@ -29,17 +30,15 @@ export const Categories = () => {
   const createCategory = async (event) => {
     event.preventDefault();
     try {
-      const response = await PostCategory(category);
-      if (response) {
-        setBandera(!bandera);
-        setCategory({
-          categoriaNombre: "",
-          categoriaDescripcion: "",
-        });
-        console.log("La categoria se creado correctamente");
-      } else {
-        alert("La categoria no se pudo crear");
+      const token = GetToken();
+      const response = await PostCategory(category, token);
+      if (!response.data) {
+        throw new Error(response.error);
       }
+      setBandera(!bandera);
+      setCategory({
+        name: "",
+      });
     } catch (error) {
       console.log(error);
     }
@@ -63,10 +62,10 @@ export const Categories = () => {
           </thead>
           <tbody>
             {listOfCategories.length > 0 &&
-              listOfCategories.map((category) => (
-                <tr key={category.categoriaId}>
-                  <td>{category.categoriaNombre}</td>
-                  <td>{category.categoriaDescripcion}</td>
+              listOfCategories.map((category, index) => (
+                <tr key={category.id}>
+                  <td>{index + 1}</td>
+                  <td>{category.name}</td>
                 </tr>
               ))}
           </tbody>
@@ -79,24 +78,16 @@ export const Categories = () => {
           <label htmlFor="productName">Category name</label>
           <input
             type="text"
-            name="categoriaNombre"
-            id="categoriaNombre"
-            value={category.categoriaNombre}
+            name="name"
+            id="name"
+            value={category.name}
             onChange={handleInputChange}
           />
         </div>
         <div className="form-group">
-          <label htmlFor="productDescription">Category description</label>
-          <input
-            type="text"
-            name="categoriaDescripcion"
-            id="categoriaDescripcion"
-            value={category.categoriaDescripcion}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <button className="Products-create-button">Create category</button>
+          <button type="submit" className="Products-create-button">
+            Create category
+          </button>
         </div>
       </form>
     </div>

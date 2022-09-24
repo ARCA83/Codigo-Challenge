@@ -42,3 +42,11 @@ export const SignOut = () => {
   window.localStorage.removeItem("token");
   return (window.location.href = "/");
 };
+
+export const GetToken = () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  return token;
+};

@@ -14,6 +14,11 @@
   -webkit-text-size-adjust: 100%;
 } */
 
+@font-face {
+  font-family: "open-sans";
+  src: local("open-sans"), url(./fonts/OpenSans-Regular.ttf) format("truetype");
+}
+
 * {
   box-sizing: border-box;
 }
