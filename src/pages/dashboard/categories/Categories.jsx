@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from "react";
+import { FaTrashAlt } from "react-icons/fa";
 import { AdminContext } from "../../../contexts/AdminContext";
 import { GetToken } from "../../../services/AuthServices";
 import {
+  DeleteCategory,
   GetCategories,
   PostCategory,
 } from "../../../services/CategoriesServices";
@@ -22,7 +24,9 @@ export const Categories = () => {
     const fetchData = async () => {
       const token = GetToken();
       const response = await GetCategories(token);
-      setListOfCategories(response.data);
+      if (response.status === 200) {
+        setListOfCategories(response.data.data);
+      }
     };
     fetchData();
   }, [bandera]);
@@ -32,15 +36,30 @@ export const Categories = () => {
     try {
       const token = GetToken();
       const response = await PostCategory(category, token);
-      if (!response.data) {
-        throw new Error(response.error);
+      if (response.status === 201) {
+        setBandera(!bandera);
+        setCategory({
+          name: "",
+        });
+      } else {
+        throw new Error(response.message);
       }
-      setBandera(!bandera);
-      setCategory({
-        name: "",
-      });
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+    }
+  };
+
+  const deleteCategory = async (category_id) => {
+    try {
+      const token = GetToken();
+      const response = await DeleteCategory(category_id, token);
+      if (response.status === 200) {
+        setBandera(!bandera);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -56,8 +75,9 @@ export const Categories = () => {
         <table>
           <thead>
             <tr>
-              <th>Product name</th>
-              <th>Product description</th>
+              <th>#</th>
+              <th>Category name</th>
+              <th>Options</th>
             </tr>
           </thead>
           <tbody>
@@ -66,6 +86,9 @@ export const Categories = () => {
                 <tr key={category.id}>
                   <td>{index + 1}</td>
                   <td>{category.name}</td>
+                  <td>
+                    <FaTrashAlt onClick={() => deleteCategory(category.id)} />
+                  </td>
                 </tr>
               ))}
           </tbody>

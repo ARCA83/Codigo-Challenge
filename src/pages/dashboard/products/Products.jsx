@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../../../contexts/AdminContext";
 import { GetCategories } from "../../../services/CategoriesServices";
+import { GetToken } from "../../../services/AuthServices";
 import {
   GetAllProducts,
   PostProduct,
@@ -24,8 +25,11 @@ export const Products = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await GetCategories();
-      setListOfCategories(response);
+      const token = GetToken();
+      const response = await GetCategories(token);
+      if (response.status === 200) {
+        setListOfCategories(response.data.data);
+      }
     };
     fetchData();
   }, []);
