@@ -27,10 +27,12 @@ export const PublicShoppingCart = ({ showShopping, handleShowShopping }) => {
         <h3>Shopping Cart</h3>
         {shoppingItems &&
           shoppingItems.map((item) => (
-            <div className="Shipping-Cart-item">
-              <div>{/* <img src={item.imagen} alt="Imagen Producto" /> */}</div>
-              <div>{item.nombre}</div>
-              <div>{item.cantidad}</div>
+            <div className="Shopping-Cart-item">
+              <div className="Shopping-Cart-item-image">
+                {/* <img src={item.imagen} alt="Imagen Producto" /> */}
+              </div>
+              <span className="Shopping-Cart-item-name">{item.nombre}</span>
+              <span className="Shopping-Cart-item-amount">{item.cantidad}</span>
             </div>
           ))}
       </div>
