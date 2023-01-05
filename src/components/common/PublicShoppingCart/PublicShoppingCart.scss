@@ -28,22 +28,32 @@
       cursor: pointer;
     }
   }
+  .Shopping-Cart-title {
+    margin-bottom: 20px;
+  }
   .Shopping-Cart-item {
     display: flex;
-    margin-bottom: 10px;
+    justify-content: space-between;
+    column-gap: 10px;
+    margin-bottom: 20px;
     .Shopping-Cart-item-image {
       height: 40px;
       width: 40px;
       border-radius: 5px;
       background-color: gray;
-      margin-right: 1rem;
     }
     .Shopping-Cart-item-name {
       font-weight: 600;
+      max-width: 300px;
     }
     .Shopping-Cart-item-amount {
       font-weight: 600;
-      margin-left: auto;
+    }
+    .Shopping-Cart-item-price {
+    }
+    .Shopping-Cart-item-trash {
+      color: red;
+      cursor: pointer;
     }
   }
 }

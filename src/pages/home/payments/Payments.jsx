@@ -1,9 +1,7 @@
-import "./PublicShoppingCart.scss";
-import { MdClose } from "react-icons/md";
-import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
+import { FaTrash } from "react-icons/fa";
 
-export const PublicShoppingCart = ({ showShopping, handleShowShopping }) => {
+export const Payments = () => {
   const [shoppingItems, setShoppingItems] = useState([
     {
       imagen: "",
@@ -20,14 +18,17 @@ export const PublicShoppingCart = ({ showShopping, handleShowShopping }) => {
   ]);
 
   return (
-    <div
-      className={`Shopping-Cart ${
-        showShopping === false && "Shooping-Cart-hidden"
-      }`}
-    >
-      <div className="Shopping-Cart-content">
-        <MdClose className="Shopping-Cart-close" onClick={handleShowShopping} />
-        <h3 className="Shopping-Cart-title">Carrito de compras</h3>
+    <div className="Payments">
+      <div>
+        <h3>Datos de pagos</h3>
+        <form>
+          <div className="Payment-form-control">
+            <label htmlFor=""></label>
+          </div>
+        </form>
+      </div>
+      <div>
+        <h3>Carrito de compra</h3>
         <ul>
           {shoppingItems &&
             shoppingItems.map((item) => (
