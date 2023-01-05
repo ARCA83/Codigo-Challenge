@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { AdminContext } from "../../../contexts/AdminContext";
-import { SignIn } from "../../../services/AuthServices";
+import { signIn } from "../../../services/authServices";
 import { useNavigate } from "react-router-dom";
 
 export const PublicLogin = ({
@@ -27,7 +27,7 @@ export const PublicLogin = ({
 
   const createUser = async (e) => {
     e.preventDefault();
-    const response = await SignIn(userCredentials);
+    const response = await signIn(userCredentials);
     if (response.status === 200) {
       localStorage.setItem("token", response.data.access_token);
       setAuthentication({

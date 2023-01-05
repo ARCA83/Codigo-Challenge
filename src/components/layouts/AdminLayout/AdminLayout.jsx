@@ -1,7 +1,7 @@
 import { AdminContent } from "../../common/AdminContent/AdminContent";
 import { AdminSidebar } from "../../common/AdminSidebar/AdminSidebar";
 import { Navigate, Outlet } from "react-router-dom";
-import { isAuth } from "../../../services/AuthServices";
+import { isAuth } from "../../../services/authServices";
 import "./AdminLayout.scss";
 
 export const AdminLayout = () => {

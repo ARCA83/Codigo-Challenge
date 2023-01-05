@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { AdminContext } from "../../../contexts/AdminContext";
-import { GetToken } from "../../../services/AuthServices";
+import { getToken } from "../../../services/authServices";
 import {
-  DeleteCategory,
-  GetCategories,
-  PostCategory,
-} from "../../../services/CategoriesServices";
+  deleteCategory,
+  getAllCategories,
+  postCategory,
+} from "../../../services/categoriesServices";
 
 export const Categories = () => {
   const { setAdminTitle } = useContext(AdminContext);
@@ -22,8 +22,8 @@ export const Categories = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = GetToken();
-      const response = await GetCategories(token);
+      const token = getToken();
+      const response = await getAllCategories(token);
       if (response.status === 200) {
         setListOfCategories(response.data.data);
       }
@@ -34,8 +34,8 @@ export const Categories = () => {
   const createCategory = async (event) => {
     event.preventDefault();
     try {
-      const token = GetToken();
-      const response = await PostCategory(category, token);
+      const token = getToken();
+      const response = await postCategory(category, token);
       if (response.status === 201) {
         setBandera(!bandera);
         setCategory({
@@ -51,8 +51,8 @@ export const Categories = () => {
 
   const deleteCategory = async (category_id) => {
     try {
-      const token = GetToken();
-      const response = await DeleteCategory(category_id, token);
+      const token = getToken();
+      const response = await deleteCategory(category_id, token);
       if (response.status === 200) {
         setBandera(!bandera);
       } else {

@@ -1,0 +1,34 @@
+.Shopping-Cart {
+  height: 100vh;
+  display: flex;
+  justify-content: end;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  &.Shooping-Cart-hidden {
+    display: none;
+  }
+  .Shopping-Cart-content {
+    width: 600px;
+    height: 100%;
+    background-color: #fff;
+    padding: 20px;
+  }
+  .Shopping-Cart-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 1.8rem;
+    color: gray;
+    &:hover {
+      color: black;
+      cursor: pointer;
+    }
+  }
+  .Shopping-Cart-item {
+    display: flex;
+  }
+}

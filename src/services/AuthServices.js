@@ -1,6 +1,6 @@
 import { API_URL } from "../lib/Enviroments";
 
-export const SignIn = async (user) => {
+export const signIn = async (user) => {
   const response = await fetch(`${API_URL}/auth/signin`, {
     method: "POST",
     headers: {
@@ -13,7 +13,7 @@ export const SignIn = async (user) => {
   return { data, status };
 };
 
-export const SignUp = async (user) => {
+export const signUp = async (user) => {
   const response = await fetch(`${API_URL}/auth/signup`, {
     method: "POST",
     headers: {
@@ -38,12 +38,12 @@ export const isAuth = () => {
   return false;
 };
 
-export const SignOut = () => {
+export const signOut = () => {
   window.localStorage.removeItem("token");
   return (window.location.href = "/");
 };
 
-export const GetToken = () => {
+export const getToken = () => {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;

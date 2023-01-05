@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../../../contexts/AdminContext";
-import { GetCategories } from "../../../services/CategoriesServices";
-import { GetToken } from "../../../services/AuthServices";
+import { getAllCategories } from "../../../services/categoriesServices";
+import { getToken } from "../../../services/authServices";
 import {
-  GetAllProducts,
-  PostProduct,
-  UploadProductImage,
-} from "../../../services/ProductsServices";
+  getAllProducts,
+  postProduct,
+  uploadProductImage,
+} from "../../../services/productsServices";
 import { IoIosArrowDown } from "react-icons/io";
 import "./Products.scss";
 
@@ -14,19 +14,20 @@ export const Products = () => {
   const { setAdminTitle } = useContext(AdminContext);
   const [listOfProducts, setListOfProducts] = useState([]);
   const [listOfCategories, setListOfCategories] = useState([]);
+  const [image, setImage] = useState();
   const [product, setProduct] = useState({
-    productoNombre: "",
-    productoDescripcion: "",
-    productoPrecio: 0.0,
-    productoImagen: "",
-    categoriaId: 0,
+    name: "",
+    description: "",
+    price: 0.0,
+    stock: 0,
+    category_id: 0,
   });
   const [bandera, setBandera] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = GetToken();
-      const response = await GetCategories(token);
+      const token = getToken();
+      const response = await getAllCategories(token);
       if (response.status === 200) {
         setListOfCategories(response.data.data);
       }
@@ -37,8 +38,8 @@ export const Products = () => {
   useEffect(() => {
     setAdminTitle("Products");
     const fetchData = async () => {
-      const token = GetToken();
-      const response = await GetAllProducts(token);
+      const token = getToken();
+      const response = await getAllProducts(token);
       setListOfProducts(response.data.data);
     };
     fetchData();
@@ -47,28 +48,34 @@ export const Products = () => {
   const createProduct = async (event) => {
     event.preventDefault();
     try {
-      const response = await PostProduct(product);
-      if (response) {
-        setBandera(!bandera);
-        setProduct({
-          productoNombre: "",
-          productoDescripcion: "",
-          productoPrecio: 0.0,
-          productoImagen: "",
-          categoriaId: 0,
-        });
-      }
+      const token = getToken();
+      const response = await postProduct(product, image, token);
+      console.log(response);
+      // if (response) {
+      //   setBandera(!bandera);
+      //   setProduct({
+      //     productoNombre: "",
+      //     productoDescripcion: "",
+      //     productoPrecio: 0.0,
+      //     productoImagen: "",
+      //     categoriaId: 0,
+      //   });
+      // }
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    if (name === "productoPrecio") {
+    const { name, value } = event.currentTarget;
+    if (name === "price") {
       return setProduct({ ...product, [name]: parseFloat(value) });
-    } else if (name === "categoriaId") {
+    } else if (name === "category_id") {
       return setProduct({ ...product, [name]: parseInt(value) });
+    } else if (name === "stock") {
+      return setProduct({ ...product, [name]: parseInt(value) });
+    } else if (name === "image") {
+      return setProduct({ ...product, [name]: event.target.files[0] });
     } else {
       return setProduct({ ...product, [name]: value });
     }
@@ -77,7 +84,7 @@ export const Products = () => {
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     try {
-      const response = await UploadProductImage(file);
+      const response = await uploadProductImage(file);
       if (response.success) {
         return setProduct({ ...product, [name]: value });
       }
@@ -131,12 +138,12 @@ export const Products = () => {
       <h4 className="Products-subtitle">Create product</h4>
       <form className="Products-create-form" onSubmit={createProduct}>
         <div className="form-group">
-          <label htmlFor="productoNombre">Nombre de producto</label>
+          <label htmlFor="productoNombre">Product name</label>
           <input
             type="text"
-            name="productoNombre"
-            id="productoNombre"
-            value={product.productoNombre}
+            name="name"
+            id="name"
+            value={product.name}
             onChange={handleInputChange}
           />
         </div>
@@ -144,9 +151,9 @@ export const Products = () => {
           <label htmlFor="productoDescripcion">Product description</label>
           <input
             type="text"
-            name="productoDescripcion"
-            id="productoDescripcion"
-            value={product.productoDescripcion}
+            name="description"
+            id="description"
+            value={product.description}
             onChange={handleInputChange}
           />
         </div>
@@ -156,9 +163,9 @@ export const Products = () => {
             type="number"
             min={0}
             step={0.1}
-            name="productoPrecio"
-            id="productoPrecio"
-            value={product.productoPrecio}
+            name="price"
+            id="price"
+            value={product.price}
             onChange={handleInputChange}
           />
         </div>
@@ -166,29 +173,43 @@ export const Products = () => {
           <label htmlFor="productoImagen">Product image</label>
           <input
             type="file"
-            name="productoImagen"
-            id="productoImagen"
-            onChange={handleFileChange}
+            name="image"
+            id="image"
+            onChange={(e) => setImage(e.target.files[0])}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="productoImagen">Product stock</label>
+          <input
+            type="number"
+            min={0}
+            step={1}
+            name="stock"
+            id="stock"
+            value={product.stock}
+            onChange={handleInputChange}
           />
         </div>
         <div className="form-group">
           <label htmlFor="categoriaId">Product category</label>
           <select
-            name="categoriaId"
-            id="categoriaId"
-            value={product.categoriaId}
+            name="category_id"
+            id="category_id"
+            value={product.category_id}
             onChange={handleInputChange}
           >
             <option value="">Elegir Categoria</option>
-            {listOfCategories.map((category, index) => (
-              <option key={index} value={category.categoriaId}>
-                {category.categoriaNombre}
+            {listOfCategories?.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
               </option>
             ))}
           </select>
         </div>
         <div className="form-group">
-          <button className="Products-create-button">Create product</button>
+          <button type="submit" className="Products-create-button">
+            Create product
+          </button>
         </div>
       </form>
     </div>

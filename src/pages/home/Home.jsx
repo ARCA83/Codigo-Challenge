@@ -1,14 +1,14 @@
 import "./Home.scss";
 import dress from "@assets/dress.png";
 import { ProductCard } from "@components/products/productCard/ProductCard";
-import { GetAllProducts } from "../../services/ProductsServices";
+import { getAllProducts } from "../../services/productsServices";
 import { useEffect, useState } from "react";
 
 export const Home = () => {
   const [listOfProducts, setListOfProducts] = useState([]);
 
   useEffect(() => {
-    GetAllProducts()
+    getAllProducts()
       .then((response) => {
         if (response) {
           setListOfProducts(response);

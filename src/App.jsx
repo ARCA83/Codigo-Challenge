@@ -8,7 +8,6 @@ import { PublicLayout } from "./components/layouts/PublicLayout/PublicLayout";
 import { Home } from "./pages/home/Home";
 import { Search } from "./pages/home/search/Search";
 import { ProductsList } from "./components/products/productsList/ProductsList";
-import { Try } from "./pages/Try/Try";
 
 const head = document.getElementsByTagName("head")[0];
 const facebookMetaData = document.createElement("meta");
@@ -31,17 +30,11 @@ function App() {
               <Route path="novedades" element={<ProductsList />} />
               <Route path="destacados" element={<ProductsList />} />
             </Route>
-            {/* <Route path="teams" element={<Teams />}>
-                            <Route path=":teamId" element={<Team />} />
-                            <Route path="new" element={<NewTeamForm />} />
-                            <Route index element={<LeagueStandings />} />*/}
           </Route>
-          {/* <Route path="/pe/dashboard" element={< />}> */}
           <Route path="admin-panel" element={<AdminLayout />}>
             <Route index path="products" element={<Products />} />
             <Route path="categories" element={<Categories />} />
           </Route>
-          <Route path="try" element={<Try />}></Route>
           <Route path="*" element={<Navigate to={"/pe"} />} />
         </Routes>
       </BrowserRouter>

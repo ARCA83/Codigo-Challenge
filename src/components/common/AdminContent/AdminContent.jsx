@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import {
-  PostProduct,
-  GetAllProducts,
-} from "../../../services/ProductsServices";
+  postProduct,
+  getAllProducts,
+} from "../../../services/productsServices";
 import { BiSearch } from "react-icons/bi";
 import { MdOutlineNotificationAdd } from "react-icons/md";
 import { IoIosArrowDown } from "react-icons/io";
 import "./AdminContent.scss";
 import { AdminContext } from "../../../contexts/AdminContext";
-import { SignOut } from "../../../services/AuthServices";
+import { signOut } from "../../../services/authServices";
 
 export const AdminContent = ({ children }) => {
   const { adminTitle } = useContext(AdminContext);
@@ -33,7 +33,7 @@ export const AdminContent = ({ children }) => {
               <h3>Paolo Soncco</h3>
               <span>Vendedor</span>
             </div>
-            <IoIosArrowDown style={{ cursor: "pointer" }} onClick={SignOut} />
+            <IoIosArrowDown style={{ cursor: "pointer" }} onClick={signOut} />
           </div>
         </div>
         {children}
