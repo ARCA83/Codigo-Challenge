@@ -2,8 +2,11 @@ import "./PublicShoppingCart.scss";
 import { MdClose } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const PublicShoppingCart = ({ showShopping, handleShowShopping }) => {
+
+  const navigate = useNavigate()
   const [shoppingItems, setShoppingItems] = useState([
     {
       imagen: "",
@@ -19,16 +22,20 @@ export const PublicShoppingCart = ({ showShopping, handleShowShopping }) => {
     },
   ]);
 
+  const redirectToPayment = () => {
+    handleShowShopping()
+    navigate("/pe/pagar")
+  }
+
   return (
     <div
-      className={`Shopping-Cart ${
-        showShopping === false && "Shooping-Cart-hidden"
-      }`}
+      className={`Shopping-Cart ${showShopping === false && "Shooping-Cart-hidden"
+        }`}
     >
       <div className="Shopping-Cart-content">
         <MdClose className="Shopping-Cart-close" onClick={handleShowShopping} />
         <h3 className="Shopping-Cart-title">Carrito de compras</h3>
-        <ul>
+        <ul className="Shopping-Cart-menu">
           {shoppingItems &&
             shoppingItems.map((item) => (
               <li className="Shopping-Cart-item">
@@ -44,6 +51,13 @@ export const PublicShoppingCart = ({ showShopping, handleShowShopping }) => {
               </li>
             ))}
         </ul>
+        <button
+          type="button"
+          className="Shopping-Cart-button"
+          onClick={redirectToPayment}
+        >
+          Comprar ahora
+        </button>
       </div>
     </div>
   );

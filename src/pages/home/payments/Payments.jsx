@@ -1,3 +1,4 @@
+import './Payments.scss'
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
@@ -15,36 +16,52 @@ export const Payments = () => {
       cantidad: 2,
       precio: 150.0,
     },
-  ]);
+  ])
 
   return (
     <div className="Payments">
-      <div>
-        <h3>Datos de pagos</h3>
-        <form>
-          <div className="Payment-form-control">
-            <label htmlFor=""></label>
+      <div className="u_wrapper">
+        <div className='Payments-container'>
+          <div className='Payments-card-data'>
+            <h3>Datos de pagos</h3>
+            <form>
+              <div className="Payments-form-control">
+                <label htmlFor="tarjeta">Numero de tarjeta</label>
+                <input type="text" id='tarjeta' />
+              </div>
+              <div className='Payments-form-control'>
+                <label htmlFor="ccv">ccv</label>
+                <input type="text" id='ccv' />
+              </div>
+              <button
+                type='button'
+                className="Payments-form-button"
+              // onClick={}
+              >
+                Confirmar compra
+              </button>
+            </form>
           </div>
-        </form>
-      </div>
-      <div>
-        <h3>Carrito de compra</h3>
-        <ul>
-          {shoppingItems &&
-            shoppingItems.map((item) => (
-              <li className="Shopping-Cart-item">
-                <div className="Shopping-Cart-item-image">
-                  {/* <img src={item.imagen} alt="Imagen Producto" /> */}
-                </div>
-                <span className="Shopping-Cart-item-name">{item.nombre}</span>
-                <span className="Shopping-Cart-item-amount">
-                  {item.cantidad}
-                </span>
-                <span className="Shopping-Cart-item-price">{item.precio}</span>
-                <FaTrash className="Shopping-Cart-item-trash" />
-              </li>
-            ))}
-        </ul>
+          <div className='Payments-menu-items'>
+            <h3>Carrito de compra</h3>
+            <ul>
+              {shoppingItems &&
+                shoppingItems.map((item) => (
+                  <li className="Payments-item">
+                    <div className="Payments-item-image">
+                      {/* <img src={item.imagen} alt="Imagen Producto" /> */}
+                    </div>
+                    <span className="Payments-item-name">{item.nombre}</span>
+                    <span className="Payments-item-amount">
+                      {item.cantidad}
+                    </span>
+                    <span className="Payments-item-price">{item.precio}</span>
+                    <FaTrash className="Payments-item-trash" />
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
