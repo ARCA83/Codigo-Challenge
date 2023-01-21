@@ -5,14 +5,14 @@ import { useState } from 'react'
 
 const ProductCard = ({ product }) => {
 
-    const [likedProduct, setLikedProduct] = useState(true);
+    const [likedProduct, setLikedProduct] = useState(false);
 
     return (
         <div className='Card'>
             <div className="Card-header">
-                <img className='Card-product-image' src={product.productoImagen} alt="" />
+                <img className='Card-product-image' src={product.imagen} alt="" />
                 <span className='Card-product-name'>Category</span>
-                <div className='Card-product-icon'>
+                <div className='Card-product-icon' onClick={()=>setLikedProduct(!likedProduct)}>
                     {
                         likedProduct ? <AiFillHeart className='Card-product-heart-liked' /> : <AiOutlineHeart className='Card-product-heart' />
                     }
@@ -20,11 +20,11 @@ const ProductCard = ({ product }) => {
             </div>
             <div className="Card-body">
                 <div className='Card-product-description'>
-                    <h3>{product.productoNombre}</h3>
-                    <p>{product.productoDescripcion}</p>
+                    <h3>{product.nombre}</h3>
+                    <p>{product.nombre}</p>
                 </div>
                 <div className='Card-product-price'>
-                    <button className='Card-price-button'>${product.productoPrecio}</button>
+                    <button className='Card-price-button'>${product.precio}</button>
                 </div>
             </div>
         </div>

@@ -12,7 +12,7 @@ export const Categories = () => {
   const { setAdminTitle } = useContext(AdminContext);
   const [listOfCategories, setListOfCategories] = useState([]);
   const [category, setCategory] = useState({
-    name: "",
+    nombre: "",
   });
   const [bandera, setBandera] = useState(false);
 
@@ -22,8 +22,8 @@ export const Categories = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = getToken();
-      const response = await getAllCategories(token);
+      // const token = getToken();
+      const response = await getAllCategories();
       if (response.status === 200) {
         setListOfCategories(response.data.data);
       }
@@ -34,12 +34,12 @@ export const Categories = () => {
   const createCategory = async (event) => {
     event.preventDefault();
     try {
-      const token = getToken();
-      const response = await postCategory(category, token);
+      // const token = getToken();
+      const response = await postCategory(category);
       if (response.status === 201) {
         setBandera(!bandera);
         setCategory({
-          name: "",
+          nombre: "",
         });
       } else {
         throw new Error(response.message);
@@ -85,7 +85,7 @@ export const Categories = () => {
               listOfCategories.map((category, index) => (
                 <tr key={category.id}>
                   <td>{index + 1}</td>
-                  <td>{category.name}</td>
+                  <td>{category.nombre}</td>
                   <td>
                     <FaTrashAlt onClick={() => deleteCategory(category.id)} />
                   </td>
@@ -98,12 +98,12 @@ export const Categories = () => {
       <h4 className="Products-subtitle">Create category</h4>
       <form className="Products-create-form" onSubmit={createCategory}>
         <div className="form-group">
-          <label htmlFor="productName">Category name</label>
+          <label htmlFor="nombre">Category name</label>
           <input
             type="text"
-            name="name"
-            id="name"
-            value={category.name}
+            name="nombre"
+            id="nombre"
+            value={category.nombre}
             onChange={handleInputChange}
           />
         </div>
