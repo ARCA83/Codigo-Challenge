@@ -3,9 +3,9 @@ import { FaTrashAlt } from "react-icons/fa";
 import { AdminContext } from "../../../contexts/AdminContext";
 import { getToken } from "../../../services/authServices";
 import {
-  deleteCategory,
-  getAllCategories,
-  postCategory,
+  deleteCategoryService,
+  getAllCategoriesService,
+  postCategoryService,
 } from "../../../services/categoriesServices";
 
 export const Categories = () => {
@@ -23,7 +23,7 @@ export const Categories = () => {
   useEffect(() => {
     const fetchData = async () => {
       // const token = getToken();
-      const response = await getAllCategories();
+      const response = await getAllCategoriesService();
       if (response.status === 200) {
         setListOfCategories(response.data.data);
       }
@@ -35,7 +35,7 @@ export const Categories = () => {
     event.preventDefault();
     try {
       // const token = getToken();
-      const response = await postCategory(category);
+      const response = await postCategoryService(category);
       if (response.status === 201) {
         setBandera(!bandera);
         setCategory({
@@ -51,8 +51,8 @@ export const Categories = () => {
 
   const deleteCategory = async (category_id) => {
     try {
-      const token = getToken();
-      const response = await deleteCategory(category_id, token);
+      // const token = getToken();
+      const response = await deleteCategoryService(category_id);
       if (response.status === 200) {
         setBandera(!bandera);
       } else {

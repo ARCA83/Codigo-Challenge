@@ -1,6 +1,6 @@
 import { API_URL } from "@lib/Enviroments";
 
-export const getAllCategories = async () => {
+export const getAllCategoriesService = async () => {
   const response = await fetch(`${API_URL}/categorias/listar`, {
     // headers: {
     //   Authorization: "Bearer " + token,
@@ -11,7 +11,7 @@ export const getAllCategories = async () => {
   return { data, status };
 };
 
-export const postCategory = async (category) => {
+export const postCategoryService = async (category) => {
   const response = await fetch(`${API_URL}/categorias/crear`, {
     method: "POST",
     headers: {
@@ -25,11 +25,11 @@ export const postCategory = async (category) => {
   return { data, status };
 };
 
-export const deleteCategory = async (id, token) => {
-  const response = await fetch(`${API_URL}/categories/${id}`, {
+export const deleteCategoryService = async (id) => {
+  const response = await fetch(`${API_URL}/categorias/eliminar/${id}`, {
     method: "DELETE",
     headers: {
-      Authorization: "Bearer " + token,
+      // Authorization: "Bearer " + token,
     },
   });
   const status = response.status;
