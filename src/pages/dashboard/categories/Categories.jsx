@@ -36,6 +36,7 @@ export const Categories = () => {
     try {
       // const token = getToken();
       const response = await postCategoryService(category);
+      console.log(response)
       if (response.status === 201) {
         setBandera(!bandera);
         setCategory({

@@ -13,7 +13,7 @@ export const Home = () => {
     //   .then(json => setListOfProducts(json.data))
 
     const getData = async () => {
-      const response = await fetch('http://127.0.0.1:5000/productos/lista')
+      const response = await fetch('http://127.0.0.1:5000/productos/listar')
       const json = await response.json()
       setListOfProducts(json.data)
     }
